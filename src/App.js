@@ -18,6 +18,14 @@ const useStyles = makeStyles({
     },
 });
 
+
+//const arr = ["banana", "orange", "kiwi", "citron", "raisin"];
+//random massive function
+function arrRandom(arr) {
+    arr.sort(() => Math.random() - 0.5);
+    return arr;
+}
+
 // converseArrayToObject using forEach
 // function converseArrayToObject (users, numberPictureByPage) {
 //     //const numberPage = users.length/numberPictureByPage;
@@ -120,7 +128,7 @@ function App() {
                                        style={{maxWidth:"100%"}}
                                    />
                                    <CardContent>
-                                       <Typography gutterBottom variant="p" component="h4" style={{fontSize:"1.1rem"}}>
+                                       <Typography gutterBottom variant="h6" component="h6" style={{fontSize:"1.1rem"}}>
                                            {firstName} {"    "} {lastName}
                                        </Typography>
                                    </CardContent>
