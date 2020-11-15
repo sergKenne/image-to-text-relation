@@ -1,23 +1,46 @@
 
 import './App.css';
-import React from "react";
+import React, {useState, useEffect} from "react";
 import data from './data.json'
 
 const users = data.user;
 
+// converseArrayToObject using forEach
+// function converseArrayToObject (users, numberPictureByPage) {
+//     //const numberPage = users.length/numberPictureByPage;
+//     let tempArr = [];
+//     let newArrayFragment = [];
+//     let newObject= {};
+//
+//     users.forEach(user => {
+//         tempArr.push(user);
+//         if(tempArr.length === numberPictureByPage) {
+//             newArrayFragment.push(tempArr);
+//             tempArr=[];
+//         }
+//     });
+//
+//     newArrayFragment.forEach((item, ind) => {
+//         newObject[ind] = item;
+//     });
+//
+//     return newObject;
+//
+// }
+
+
+// converseArrayToObject using for and slice
 function converseArrayToObject (users, numberPictureByPage) {
     const numberPage = users.length/numberPictureByPage;
     let tempArr = [];
     let newArrayFragment = [];
     let newObject= {};
     
-    users.forEach(user => {
-        tempArr.push(user);
-        if(tempArr.length === numberPictureByPage) {
-            newArrayFragment.push(tempArr);
-            tempArr=[];
-        }
-    });
+    for(let i=0; i<numberPage; i++) {
+        tempArr = users.slice(i*numberPictureByPage, numberPictureByPage*(i+1) );
+        newArrayFragment.push(tempArr);
+        tempArr =[];
+    }
     
     newArrayFragment.forEach((item, ind) => {
         newObject[ind] = item;
@@ -27,7 +50,7 @@ function converseArrayToObject (users, numberPictureByPage) {
     
 }
 
-console.log("outObject:", converseArrayToObject(users, 25))
+console.log("outObjectSlice:", converseArrayToObject(users, 25))
 
 // let temp = [];
 // const newArr = [];
@@ -49,8 +72,14 @@ console.log("outObject:", converseArrayToObject(users, 25))
 // console.log("newArr:", newArr);
 // console.log(users)
 
+
+
 function App() {
-    // console.log(data.user);
+    const[users, setUsers] = useState([]);
+    
+    useEffect(()=>{
+        setUsers(converseArrayToObject(users, 25));
+    },[])
   return (
     <div className="App">
       <h1>Hello</h1>
