@@ -78,6 +78,8 @@ function App() {
     const subObject = converseArrayToObject(users, 25);
     const [counter,setCounter] = useState(0);
     
+   const [timer, setTimer] = useState(null)
+    
     const nextCounter = () => {
         if(counter === users.length/25 - 1) {
             setCounter(0);
@@ -96,18 +98,61 @@ function App() {
     
     useEffect(()=>{
         setUsers(data.user);
+        let n=0;
+        let t = 0;
+        
+        let timePass = setInterval(()=>{
+           n=n+1;
+          
+            if(n==60) {
+                t=t+1;
+                n=1;
+            }
+            //console.log(n);
+            document.querySelector('.hour').innerText = new Date().getHours();
+            document.querySelector('.minutes').innerText = new Date().getMinutes()
+            //document.querySelector('.second').innerText = new Date().getSeconds();
+            
+            document.querySelector('.nbMinute').innerText = 14 - t;
+            document.querySelector('.nbSecond').innerText = 60 - n;
+            
+        }, 1000);
+        
+        console.log("typeof timePass:",  timePass)
+        setTimer(timePass);
+        
+        if( t == 15) {
+            return () => {
+                clearInterval(timePass);
+            }
+        }
+        
     },[])
   return (
     <div className="App">
       <h1>Hello</h1>
+        <div className="date">
+            <div>
+               <span className="nbMinute"></span>{" : "} <span className="nbSecond"></span>
+            </div><br/>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => clearInterval(timer)}
+                className="stop"
+            >Stop</Button><br/>
+            <span className="hour"></span>{" : "}
+            <span className="minutes"></span>{" : "}
+            <span className="second"></span>
+        </div>
         <Container>
             <Box>
                 <Button variant="contained" color="primary" onClick={ prevCounter }>
-                    Decreament
+                    Prev
                 </Button>
                 {"        "}
                 <Button variant="contained" color="primary" onClick={ nextCounter }>
-                    Increament
+                    next
                 </Button>
             </Box><br/>
             <Box>
