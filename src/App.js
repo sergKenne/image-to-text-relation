@@ -21,6 +21,57 @@ const useStyles = makeStyles({
 
 //const arr = ["banana", "orange", "kiwi", "citron", "raisin"];
 //random massive function
+
+const obj ={
+    "0-0": "serge                      simplce",
+    "0-1": "tat co   lette",
+    "0-2": "robert     ali     ma",
+    "0-3": "Albertine",
+    "1-0": "max  mer",
+    "1-1": "ti    hi",
+    "1-2": "Rem smith",
+    "1-3": "fi     fa"
+}
+
+function ObjToArr(ob) {
+    let n=0, k=0;
+    let arr = [];
+    for(let i=0; i<Object.keys(ob).length; i++) {
+        let tmp = "";
+        tmp = ob[`${n}-${k}`];
+        arr.push(tmp);
+        k=k+1;
+        if( k===4 ) {
+            n=n+1;
+            k=0;
+        }
+    }
+    
+    console.log("arrIsObj:", arr);
+    const arrMap = arr.map(item => {
+        
+        const el = item.trim().split(" ");
+        let el2 = "";
+        for(let j=1; j<el.length; j++) {
+            if(el[j].length>0){
+                el2 = el[j];
+                break;
+            }
+        }
+        
+        return {
+            firstName: el[0],
+            lastName: el2
+        }
+    })
+    
+    console.log("arrMap:", arrMap);
+}
+
+ObjToArr(obj);
+
+
+
 function arrRandom(arr) {
     arr.sort(() => Math.random() - 0.5);
     return arr;
