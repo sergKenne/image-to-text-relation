@@ -1,11 +1,12 @@
 
 import './App.css';
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import data from './data.json'
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container, Grid, Card, CardActionArea, CardContent,CardMedia, Typography, Button, Box
 } from "@material-ui/core";
+import Input from '@material-ui/core/Input';
 
 //const users = data.user;
 
@@ -33,7 +34,26 @@ const obj ={
     "1-3": "fi     fa"
 }
 
-function ObjToArr(ob) {
+function firstTransform() {
+    let obFinale= {}
+    let n=0, k=0;
+    for(let i=0; i<100; i++) {
+        obFinale[`${n}-${k}`] ="";
+        k++;
+        if(k === 25){
+           n=n+1;
+           k=0;
+        }
+    }
+    return obFinale;
+}
+
+let firstOb = firstTransform();
+
+
+
+
+function ObjToArr(ob, nbEltByPage) {
     let n=0, k=0;
     let arr = [];
     for(let i=0; i<Object.keys(ob).length; i++) {
@@ -41,7 +61,7 @@ function ObjToArr(ob) {
         tmp = ob[`${n}-${k}`];
         arr.push(tmp);
         k=k+1;
-        if( k===4 ) {
+        if( k=== nbEltByPage ) {
             n=n+1;
             k=0;
         }
@@ -68,7 +88,9 @@ function ObjToArr(ob) {
     console.log("arrMap:", arrMap);
 }
 
-ObjToArr(obj);
+console.log("obj:", obj);
+
+ObjToArr(obj, 4);
 
 
 
@@ -129,6 +151,8 @@ function App() {
     const subObject = converseArrayToObject(users, 25);
     const [counter,setCounter] = useState(0);
     
+    const [responses, setResponses] = useState(firstOb);
+    
    const [timer, setTimer] = useState(null)
     
     const nextCounter = () => {
@@ -147,6 +171,18 @@ function App() {
         }
     }
     
+    const handleChange = (e) => {
+       setResponses(prevState => {
+           return {
+               ...prevState,
+               [e.target.name]: e.target.value
+           }
+       })
+    }
+    
+    
+    
+    
     useEffect(()=>{
         setUsers(data.user);
         let n=0;
@@ -155,7 +191,7 @@ function App() {
         let timePass = setInterval(()=>{
            n=n+1;
           
-            if(n==60) {
+            if(n===60) {
                 t=t+1;
                 n=1;
             }
@@ -172,13 +208,15 @@ function App() {
         console.log("typeof timePass:",  timePass)
         setTimer(timePass);
         
-        if( t == 15) {
+        if( t === 15) {
             return () => {
                 clearInterval(timePass);
             }
         }
         
     },[])
+    
+    
   return (
     <div className="App">
       <h1>Hello</h1>
@@ -227,6 +265,12 @@ function App() {
                                        <Typography gutterBottom variant="h6" component="h6" style={{fontSize:"1.1rem"}}>
                                            {firstName} {"    "} {lastName}
                                        </Typography>
+                                       <input
+                                           placeholder="Placeholder"
+                                           name={`${counter}-${ind}`}
+                                           value={responses[`${counter}-${ind}`]}
+                                           onChange={handleChange}
+                                       />
                                    </CardContent>
                                </CardActionArea>
                            </Card>
